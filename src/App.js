@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
+import allReducer from "./AllReducers.js";
+import { getCategories } from './Actions';
+import TopNav from "./TopNav";
+import Cats from "./Cats";
+const startState = {};
+
+
+const dateStore = createStore(
+  allReducer,
+  startState,
+  applyMiddleware(...[thunk])
+);
+
+dateStore.dispatch(getCategories())
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={dateStore}>
+      <div>
+      <TopNav></TopNav>
+       <Cats></Cats>
+      </div>
+    </Provider>
   );
 }
 
